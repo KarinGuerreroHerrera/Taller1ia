@@ -86,7 +86,27 @@ def uniformCostSearch(problem: SearchProblem):
     """
 
     # TODO: Add your code here
-    utils.raiseNotDefined()
+    frontera = utils.PriorityQueue()
+    frontera.push((problem.getStartState(), [], 0), 0)
+
+    visitados = set()
+
+    while not frontera.isEmpty():
+        estado, acciones, costo_acumulado = frontera.pop()
+
+        if estado in visitados:
+            continue
+        visitados.add(estado)
+
+        if problem.isGoalState(estado):
+            return acciones
+
+        for sucesor, accion, costo in problem.getSuccessors(estado):
+            if sucesor not in visitados:
+                nuevo_costo = costo_acumulado + costo
+                frontera.push((sucesor, acciones + [accion], nuevo_costo), nuevo_costo)
+
+    return []
 
 
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
